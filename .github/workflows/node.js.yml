@@ -27,6 +27,8 @@ jobs:
   deploystage:
     runs-on: ubuntu-latest
     steps:
+    - name: Echo
+      run: echo ${{ github.event }}
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       if: github.event == 'pull_request'
@@ -42,6 +44,8 @@ jobs:
   deployprod:
     runs-on: ubuntu-latest
     steps:
+    - name: Echo
+      run: echo ${{ github.event }}
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       if: github.event == 'push'
