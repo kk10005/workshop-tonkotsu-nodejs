@@ -4,6 +4,8 @@
 name: Node.js CI
 
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -14,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,6 +27,10 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+  deploystage:
+    runs-on: ubuntu-latest
+    if: github.event == 'pull_request'
+    steps:
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       with:
@@ -34,3 +40,15 @@ jobs:
         publish-profile: ${{ secrets.staging_slot }}
         # Enter an existing Slot other than the Production slot
         slot-name: staging
+        
+  deployprod:
+    runs-on: ubuntu-latest
+    if: github.event == 'pull_request'
+    steps:
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        # Name of the Azure Web App
+        app-name: tonkatsu-github-training
+        # Applies to Web App only: Publish profile (*.publishsettings) file contents with Web Deploy secrets
+        publish-profile: ${{ secrets.production_slot }}
