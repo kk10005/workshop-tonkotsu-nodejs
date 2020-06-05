@@ -43,7 +43,7 @@ jobs:
         
   deployprod:
     runs-on: ubuntu-latest
-    if: github.event == 'push'
+    if: github.event == 'merge'
     steps:
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
