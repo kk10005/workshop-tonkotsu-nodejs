@@ -27,8 +27,6 @@ jobs:
   deploystage:
     runs-on: ubuntu-latest
     steps:
-    - name: Echo
-      run: echo ${{ github.event_name }}
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       if: ${{ github.event_name == 'pull_request' }}
@@ -44,11 +42,9 @@ jobs:
   deployprod:
     runs-on: ubuntu-latest
     steps:
-    - name: Echo
-      run: echo ${{ github.event_name }}
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
-      if: ${{ github.event == 'push' }}
+      if: ${{ github.event_name == 'push' }}
       with:
         # Name of the Azure Web App
         app-name: tonkatsu-github-training
